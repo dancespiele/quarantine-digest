@@ -9,7 +9,7 @@ import {endpoints} from "./endpoints";
 const app = express();
 
 const corsOptions: CorsOptions = {
-    origin: "http://localhost:3000",
+    origin: process.env.BACKEND_URL,
     methods: ['OPTIONS', 'GET'],
 }
 
@@ -24,6 +24,6 @@ app.use((req, res, next) => {
 
 endpoints(app);
 
-app.listen(8000, () => {
-    console.log(`Server running in port 8000`);
+app.listen(process.env.BACKEND_URL_PORT, () => {
+    console.log(`Server running in port ${process.env.BACKEND_URL_PORT}`);
 });

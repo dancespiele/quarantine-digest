@@ -4,7 +4,9 @@
   "description": "test project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jest",
+    "intTest": "node_modules/.bin/lab -v --sourcemaps --transform node_modules/lab-transform-typescript intTest/api.ts",
+    "start": "node_modules/.bin/ts-node server/index.ts"
   },
   "repository": {
     "type": "git",
@@ -29,12 +31,41 @@
     "@types/dotenv": "^6.1.1",
     "@types/express": "^4.16.1",
     "@types/moment": "^2.13.0",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
+    "gen-ipsum": "^0.1.0",
     "lorem-ipsum": "^2.0.1",
     "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "remove": "^0.1.5",
     "ts-node": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/code": "^4.0.5",
+    "@types/enzyme": "^3.9.1",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/enzyme-to-json": "^1.5.3",
+    "@types/jest": "^24.0.11",
+    "@types/supertest": "^2.0.7",
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
+    "code": "^5.2.4",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
+    "enzyme-adapter-react-16.3": "^1.7.0",
+    "enzyme-to-json": "^3.3.5",
+    "jest": "^24.7.1",
+    "lab": "^18.0.2",
+    "lab-transform-typescript": "^3.0.1",
+    "react-test-renderer": "^16.8.6",
+    "reflect-metadata": "^0.1.13",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.4.5"
   }
 }

@@ -4,10 +4,13 @@
 		"module": "commonjs",
 		"sourceMap": true,
 		"strict": true,
-		"rootDir": ".",
-		"experimentalDecorators": true,
+		"noUnusedLocals": true,
+        "noUnusedParameters": true,
 		"emitDecoratorMetadata": true,
-		"outDir": "./lib",
-        "declaration": true
+		"experimentalDecorators": true,
+		"declaration": true,
+		"outDir": "./build",
+		"rootDir": ".",
+		"jsx": "react"
     },
 }

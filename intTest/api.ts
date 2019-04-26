@@ -1,13 +1,4 @@
-
-import * as dotenv from "dotenv";
-import * as fs from "fs";
 import "reflect-metadata";
-const path = `${__dirname}/.env.test`;
-
-if (fs.existsSync(path)) {
-    dotenv.config({path});
-}
-
 import * as bodyparser from "body-parser";
 import * as express from "express";
 import {expect} from "code";

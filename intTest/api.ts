@@ -53,9 +53,10 @@ lab.experiment("Quarantine api", () => {
             .get("/digest")
             .query({
                 pages: 2,
-                entries: total.length / 6,
+                entries: 10,
             });
         
-        console.log(response.body);
-    })
+        expect(response.body.allEmails.length).to.be.equal(10);
+        expect(response.body.allEmails[9]).include(["date", "from", "to", "subject", "content"]);
+    });
 });

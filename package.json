@@ -6,7 +6,9 @@
   "scripts": {
     "test": "./node_modules/.bin/jest",
     "intTest": "node_modules/.bin/lab -v --sourcemaps --transform node_modules/lab-transform-typescript intTest/api.ts",
-    "start": "node_modules/.bin/ts-node server/index.ts"
+    "start-backend": "node_modules/.bin/ts-node server/index.ts",
+    "start-frontend": "./node_modules/.bin/parcel -p 3000 app/index.html",
+    "debug": "node_modules/.bin/lab --inspect=9229 -v --sourcemaps --transform node_modules/lab-transform-typescript intTest/api.ts"
   },
   "repository": {
     "type": "git",
@@ -62,6 +64,7 @@
     "jest": "^24.7.1",
     "lab": "^18.0.2",
     "lab-transform-typescript": "^3.0.1",
+    "parcel-bundler": "^1.12.3",
     "react-test-renderer": "^16.8.6",
     "reflect-metadata": "^0.1.13",
     "supertest": "^4.0.2",

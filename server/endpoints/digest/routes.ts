@@ -10,8 +10,8 @@ export const digest = (app: Express) => {
             if (req.query.entries && req.query.pages) {
                 allEmails = feed.getEmails();
                 total = allEmails.length;
-                const entries = req.query.entries;
-                const pages = req.query.pages;
+                const entries = parseInt(req.query.entries);
+                const pages = parseInt(req.query.pages);
                 const init = (entries * pages) - entries + 1;
                 allEmails = allEmails.slice(init, (init + entries > allEmails.length) ?
                     allEmails.length -1 : init + entries);

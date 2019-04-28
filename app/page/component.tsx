@@ -26,7 +26,7 @@ export class Page extends React.Component<any, IPageState> {
     public render() {
         const entries = [];
         const now = moment().hour(0).minute(0);
-        const radioNames = ["Custom", "Every day", "Every working day", "Days per week", "Every weekend", "periodicaly"];
+        const radioNames = ["periodicaly", "Every day", "Every working day", "Every weekend", "Days per week", "Custom"];
         const daysName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]; 
 
         if(this.state.total) {
@@ -82,16 +82,25 @@ export class Page extends React.Component<any, IPageState> {
                                         </div>
                                         <div className="col-6 ml-auto">
                                             <div>
-                                                <h3>Choose date</h3>
-                                                <Calendar/>
+                                                {this.state.selected === "intervalForm5" ? 
+                                                    <div>
+                                                    <h3>Choose date</h3>
+                                                        <Calendar/>
+                                                    </div>
+                                                : null }
+
+                                                {this.state.selected === "intervalForm4" ?
+                                                <div>
                                                 <h3>Choose days of the week</h3>
-                                                <Form.Control
-                                                    as="select"
-                                                    multiple>
-                                                    {daysName.map((dayName) => 
-                                                        <option>{dayName}</option>
-                                                    )}    
-                                                </Form.Control>
+                                                    <Form.Control
+                                                        as="select"
+                                                        multiple>
+                                                        {daysName.map((dayName) => 
+                                                            <option>{dayName}</option>
+                                                        )}    
+                                                    </Form.Control>
+                                                    </div>   
+                                                : null}
                                                 <h3>Choose time</h3>
                                                 <TimePicker
                                                     showSecond={false}

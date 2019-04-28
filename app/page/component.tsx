@@ -1,9 +1,11 @@
 import * as React from "react";
 import {RequestOptions} from "spiel-request";
-import {Container, Row, Pagination, Button} from "react-bootstrap";
+import {Container, Row, Pagination, Button, Form} from "react-bootstrap";
+import moment from "moment";
+import TimePicker from "rc-time-picker"
 import {IPageState} from "./interfaces";
 import {request} from "../config";
-import {Email, Cron, Calendar, Form} from "../components";
+import {Email, Cron, Calendar} from "../components";
 
 /**
  * Component page for bussines logic of the application
@@ -14,6 +16,7 @@ export class Page extends React.Component<any, IPageState> {
         total: 0,
         active: 1,
         showConfig: false,
+        selected: "intervalForm0"
     }
 
     componentDidMount() {
@@ -22,6 +25,10 @@ export class Page extends React.Component<any, IPageState> {
 
     public render() {
         const entries = [];
+        const now = moment().hour(0).minute(0);
+        const radioNames = ["Custom", "Every day", "Every working day", "Days per week", "Every weekend", "periodicaly"];
+        const daysName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]; 
+
         if(this.state.total) {
             const pages = Math.ceil(this.state.total / 10);
             for(let i = 1; i <= pages; i++) {
@@ -36,7 +43,7 @@ export class Page extends React.Component<any, IPageState> {
                     </Pagination.Item>,
                 )
             }
-        }
+        };
 
         return (
             <div>
@@ -52,9 +59,54 @@ export class Page extends React.Component<any, IPageState> {
                                 <Cron 
                                     getEmails={() => this.getEmails(1)}>
                                     {this.state.showConfig ?
-                                    <div>
-                                        <Calendar></Calendar>
-                                    </div>: null}
+                                    <Row className="col-12 config mr-auto">
+                                        <div className="col-6">
+                                            <h3>Choose days</h3>
+                                            <Form>
+                                                <Form.Group>
+                                                    {radioNames.map((name, index) =>
+                                                        <Form.Check
+                                                            key={name}
+                                                            type="radio"
+                                                            label={name}
+                                                            name="intervalForm"
+                                                            id={`intervalForm${index}`}
+                                                            onChange={() => this.setState({
+                                                                selected: `intervalForm${index}`
+                                                            })}
+                                                            checked={this.state.selected === `intervalForm${index}`}
+                                                        />
+                                                    )}
+                                                </Form.Group>
+                                            </Form>
+                                        </div>
+                                        <div className="col-6 ml-auto">
+                                            <div>
+                                                <h3>Choose date</h3>
+                                                <Calendar/>
+                                                <h3>Choose days of the week</h3>
+                                                <Form.Control
+                                                    as="select"
+                                                    multiple>
+                                                    {daysName.map((dayName) => 
+                                                        <option>{dayName}</option>
+                                                    )}    
+                                                </Form.Control>
+                                                <h3>Choose time</h3>
+                                                <TimePicker
+                                                    showSecond={false}
+                                                    defaultOpenValue={moment()}
+                                                    defaultValue={now}
+                                                    inputReadOnly
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-6 list"></div>
+                                        <div className="submit col-12">
+                                            <Button
+                                            >Save</Button>
+                                        </div>
+                                    </Row>: null}
                                 </Cron>
                             </Row>
                         

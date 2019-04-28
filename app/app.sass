@@ -1,6 +1,6 @@
 $light-gray: #edf1f2
 $dark-gray: #cecece
-$hover-row: #6eefff
+$hover-item: #6eefff
 $day-width: 100% / 7
 
 .pagination-container
@@ -24,13 +24,13 @@ $day-width: 100% / 7
         cursor: pointer
 
         &:hover
-            background-color: $hover-row
+            background-color: $hover-item
 
         &:nth-child(even)
             background-color: $dark-gray
 
             &:hover
-                background-color: $hover-row
+                background-color: $hover-item
 
         .description
             margin: 0 10px 0 0
@@ -40,12 +40,29 @@ $day-width: 100% / 7
             padding: 10px 0
             background-color: #fff
 
-.calendar
+.config
     margin-top: 20px
-    .day, .dayName
-        width: $day-width
-        display: inline-block
-        padding: 5px 0
+    
+    .calendar
+        margin-top: 20px
 
-    .dayName
-        font-weight: bold
+        .day, .dayName
+            width: $day-width
+            display: inline-block
+            padding: 5px 0
+            text-align: center
+
+        .day
+            cursor: pointer
+
+            &:hover
+                background-color: $hover-item
+
+        .dayName
+            font-weight: bold
+
+    .submit
+        text-align: right
+
+        button
+            width: 100px

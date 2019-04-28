@@ -8,4 +8,8 @@ export interface IFeed {
     subject: string;
     content: string;
     date: string;
-} 
+}
+
+export interface IEmailState {
+    isOpen: boolean[];
+}

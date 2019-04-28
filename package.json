@@ -8,7 +8,7 @@
     "intTest": "node_modules/.bin/lab -v --sourcemaps --transform node_modules/lab-transform-typescript intTest/api.ts",
     "start-backend": "node_modules/.bin/ts-node server/index.ts",
     "start-frontend": "./node_modules/.bin/parcel -p 3000 app/index.html",
-    "debug": "node_modules/.bin/lab --inspect=9229 -v --sourcemaps --transform node_modules/lab-transform-typescript intTest/api.ts"
+    "debug-lab": "node_modules/.bin/lab --inspect=9229 -v --sourcemaps --transform node_modules/lab-transform-typescript intTest/api.ts"
   },
   "repository": {
     "type": "git",

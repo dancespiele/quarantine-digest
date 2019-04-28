@@ -6,6 +6,7 @@ import * as Lab from "lab";
 import * as request from "supertest";
 import {Express} from "express";
 import {endpoints} from "../server/endpoints";
+import {feed} from "../server/modules";
 
 const lab = Lab.script();
 
@@ -16,17 +17,26 @@ lab.experiment("Quarantine api", () => {
     let total: string;
 
     lab.before(() => {
+        feed.buildFeed();
         app = express();
         app.use(bodyparser.json());
         app.use(bodyparser.urlencoded({extended: false}));
         endpoints(app);
     });
 
+    lab.test("should get the inital emails", async() => {
+        const response = await request(app)
+            .get("/init");
+
+        total = response.body.total;
+        expect(response.body).include(["allEmails", "total"]);
+        expect(response.body.allEmails[0]).include(["date", "from", "to", "subject", "content"]);
+    });
+
     lab.test("should get all the emails", async () => {
         const response = await request(app)
             .get("/digest");
 
-        total = response.body.total;
         expect(response.body).include(["allEmails", "total"]);
         expect(response.body.allEmails[0]).include(["date", "from", "to", "subject", "content"]);
     });
@@ -43,7 +53,7 @@ lab.experiment("Quarantine api", () => {
         const response = await request(app)
             .get("/digest")
             .query({
-                pages: 2,
+                page: 2,
                 entries: 10,
             });
         

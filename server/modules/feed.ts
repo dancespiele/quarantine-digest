@@ -7,28 +7,28 @@ const emails: IFeed[] = [];
 class Feed {
     private crono = [
         {
-            value: moment().subtract(5, "minutes").calendar(),
+            value: moment().subtract(5, "minutes"),
         },
         {
-            value: moment().subtract(50, "seconds").calendar(),
+            value: moment().subtract(50, "seconds"),
         },
         {
-            value: moment().subtract(12, "minutes").calendar(),
+            value: moment().subtract(12, "minutes"),
         },
         {
-            value: moment().subtract(5, "minutes").calendar(),
+            value: moment().subtract(5, "minutes"),
         },
         {
-            value: moment().subtract(15, "seconds").calendar(),
+            value: moment().subtract(15, "seconds"),
         },
         {
-            value: moment().subtract(1, "minutes").calendar(),
+            value: moment().subtract(1, "minutes"),
         },
         {
-            value: moment().subtract(23, "minutes").calendar(),
+            value: moment().subtract(23, "minutes"),
         },
         {
-            value: moment().subtract(1, "day").calendar(),
+            value: moment().subtract(1, "day"),
         }
     ];
 
@@ -54,11 +54,22 @@ class Feed {
             });
         }
 
-        return emails;
+        const response = this.orderByDate();
+
+        return response;
     }
 
     public getEmails() {
-        return emails;
+        const response = this.orderByDate();
+        return response;
+    }
+
+    private orderByDate() {
+        const ordered = emails.sort((a, b) => {
+            return moment(b.date).diff(moment.utc(a.date))
+        });
+
+        return ordered;
     }
 }
 

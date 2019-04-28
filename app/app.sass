@@ -1,0 +1,51 @@
+$light-gray: #edf1f2
+$dark-gray: #cecece
+$hover-row: #6eefff
+$day-width: 100% / 7
+
+.pagination-container
+    margin-top: 10px
+    
+    .pagination
+            margin-bottom: 0
+
+.table
+    .head
+        font-size: 20px
+        padding: 10px 0
+        margin: 0
+        background-color: $light-gray
+    
+    .row-table
+        font-size: 16px
+        padding-top: 15px 
+        padding-bottom: 15px
+        background-color: $light-gray
+        cursor: pointer
+
+        &:hover
+            background-color: $hover-row
+
+        &:nth-child(even)
+            background-color: $dark-gray
+
+            &:hover
+                background-color: $hover-row
+
+        .description
+            margin: 0 10px 0 0
+
+        .content
+            margin: 5px 10px 10px 10px
+            padding: 10px 0
+            background-color: #fff
+
+.calendar
+    margin-top: 20px
+    .day, .dayName
+        width: $day-width
+        display: inline-block
+        padding: 5px 0
+
+    .dayName
+        font-weight: bold

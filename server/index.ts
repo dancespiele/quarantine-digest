@@ -5,6 +5,9 @@ import * as cors from "cors";
 import {CorsOptions} from "cors";
 import * as express from "express";
 import {endpoints} from "./endpoints";
+import {feed} from "./modules";
+
+feed.buildFeed();
 
 const app = express();
 

@@ -20,18 +20,19 @@ export class Page extends React.Component<any, IPageState> {
         selected: "intervalForm0",
         times: [<TimePicker
             key={0}
+            id={`time-${0}`}
             showSecond={false}
             defaultOpenValue={moment()}
             defaultValue={this.now}
             inputReadOnly
         />],
         periodicaly: <TimePicker
-                key={0}
-                showSecond={false}
-                defaultOpenValue={moment()}
-                defaultValue={this.now}
-                inputReadOnly
-            />
+            showSecond={false}
+            defaultOpenValue={moment()}
+            defaultValue={this.now}
+            inputReadOnly
+        />,
+        interval: [[], [], [], []],
     }
 
     componentDidMount() {
@@ -85,9 +86,12 @@ export class Page extends React.Component<any, IPageState> {
                                                             label={name}
                                                             name="intervalForm"
                                                             id={`intervalForm${index}`}
-                                                            onChange={() => this.setState({
-                                                                selected: `intervalForm${index}`
-                                                            })}
+                                                            onChange={() => {
+                                                                this.setState({
+                                                                    selected: `intervalForm${index}`
+                                                                });
+                                                                this.resetDigest();
+                                                            }}
                                                             checked={this.state.selected === `intervalForm${index}`}
                                                         />
                                                     )}
@@ -99,7 +103,9 @@ export class Page extends React.Component<any, IPageState> {
                                                 {this.state.selected === "intervalForm5" ? 
                                                     <div>
                                                     <h3>Choose date</h3>
-                                                        <Calendar/>
+                                                        <Calendar
+                                                            onChangeCalendar={(day) => this.changeCalendar(day)}
+                                                        />
                                                     </div>
                                                 : null }
 
@@ -110,7 +116,7 @@ export class Page extends React.Component<any, IPageState> {
                                                         as="select"
                                                         multiple>
                                                         {daysName.map((dayName) => 
-                                                            <option>{dayName}</option>
+                                                            <option key={dayName}>{dayName}</option>
                                                         )}    
                                                     </Form.Control>
                                                     </div>   
@@ -150,6 +156,7 @@ export class Page extends React.Component<any, IPageState> {
 
     /**
      * get all the emails
+     * @param page number of page 
      */
     private async getEmails(page: number) {
         const options: RequestOptions = {
@@ -168,10 +175,11 @@ export class Page extends React.Component<any, IPageState> {
     /**
      * add time element
      */
-    private async addTime() {
+    private addTime() {
         const times = this.state.times;
         times.push(<TimePicker
             key={times.length}
+            id={`time-${times.length}`}
             showSecond={false}
             defaultOpenValue={moment()}
             defaultValue={this.now}
@@ -186,7 +194,7 @@ export class Page extends React.Component<any, IPageState> {
     /**
      * remove the last time added
      */
-    private async removeTime() {
+    private removeTime() {
         const times = this.state.times;
 
         if(times.length > 1) {
@@ -196,4 +204,61 @@ export class Page extends React.Component<any, IPageState> {
             });
         }
     }
+
+    /**
+     * reset all the digest config values
+     */
+    private resetDigest() {
+        this.setState({
+            times: [<TimePicker
+                key={0}
+                id={`time-${0}`}
+                showSecond={false}
+                defaultOpenValue={moment()}
+                defaultValue={this.now}
+                inputReadOnly
+            />].slice(),
+            interval: [[], [], [], []].slice(), 
+        })
+    }
+
+    /**
+     * add or remove day of the calendar
+     */
+    private changeCalendar(day: string) {
+        const interval = this.state.interval;
+        const dayEl = document.getElementById(`day-${day}`);
+
+        if (dayEl && dayEl.className.indexOf("day-selected") !== -1 && interval[0].indexOf(day) !== -1) {
+            dayEl.className = dayEl.className.replace("day-selected", "");
+            const index = interval[0].indexOf(day);
+            interval[0].splice(index, 1);
+        } else if (dayEl) {
+            dayEl.className = `${dayEl.className} day-selected`;
+            interval[0].push(day)
+        }
+
+        if(!interval[1].length) interval[1].push("*");
+
+        this.setState({
+            interval: interval.slice(),
+        });
+    }
+
+    /**
+     * change the time
+     */
+    private changeTime(value: string, index: number) {
+        const interval = this.state.interval;
+        const hours = parseInt(value.split(":")[0]);
+        const minutes = parseInt(value.split(":")[1]);
+
+        interval[2][index] = hours.toString();
+        interval[3][index] = minutes.toString();
+
+        this.setState({
+            interval: interval.slice(),
+        });
+    } 
+
 }

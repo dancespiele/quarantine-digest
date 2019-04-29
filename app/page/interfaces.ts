@@ -1,3 +1,4 @@
+import {ReactElement} from "react";
 import {IFeed} from "../components";
 
 export interface IPageState {
@@ -5,5 +6,8 @@ export interface IPageState {
     total: number;
     active: number;
     showConfig: boolean;
+    selected: string;
+    times: ReactElement[];
+    periodicaly: ReactElement
 }
 

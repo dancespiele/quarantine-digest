@@ -11,12 +11,27 @@ import {Email, Cron, Calendar} from "../components";
  * Component page for bussines logic of the application
  */
 export class Page extends React.Component<any, IPageState> {
+    private now = moment().hour(0).minute(0);
     public state: IPageState = {
         emails: [],
         total: 0,
         active: 1,
         showConfig: false,
-        selected: "intervalForm0"
+        selected: "intervalForm0",
+        times: [<TimePicker
+            key={0}
+            showSecond={false}
+            defaultOpenValue={moment()}
+            defaultValue={this.now}
+            inputReadOnly
+        />],
+        periodicaly: <TimePicker
+                key={0}
+                showSecond={false}
+                defaultOpenValue={moment()}
+                defaultValue={this.now}
+                inputReadOnly
+            />
     }
 
     componentDidMount() {
@@ -25,9 +40,8 @@ export class Page extends React.Component<any, IPageState> {
 
     public render() {
         const entries = [];
-        const now = moment().hour(0).minute(0);
         const radioNames = ["periodicaly", "Every day", "Every working day", "Every weekend", "Days per week", "Custom"];
-        const daysName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]; 
+        const daysName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
         if(this.state.total) {
             const pages = Math.ceil(this.state.total / 10);
@@ -102,12 +116,14 @@ export class Page extends React.Component<any, IPageState> {
                                                     </div>   
                                                 : null}
                                                 <h3>Choose time</h3>
-                                                <TimePicker
-                                                    showSecond={false}
-                                                    defaultOpenValue={moment()}
-                                                    defaultValue={now}
-                                                    inputReadOnly
-                                                />
+                                                {this.state.selected === "intervalForm0" ? this.state.periodicaly : 
+                                                    <div>
+                                                        {this.state.times.map((time) => time)}
+                                                        <div className="col-12 add">
+                                                            <Button variant="success" onClick={() => this.addTime()}>add</Button>
+                                                            <Button variant="danger" onClick={() => this.removeTime()} disabled={this.state.times.length <= 1}>remove</Button>
+                                                        </div>
+                                                    </div>}
                                             </div>
                                         </div>
                                         <div className="col-6 list"></div>
@@ -147,5 +163,37 @@ export class Page extends React.Component<any, IPageState> {
             emails: response.allEmails.slice(),
             total: response.total,
         });
+    }
+
+    /**
+     * add time element
+     */
+    private async addTime() {
+        const times = this.state.times;
+        times.push(<TimePicker
+            key={times.length}
+            showSecond={false}
+            defaultOpenValue={moment()}
+            defaultValue={this.now}
+            inputReadOnly
+        />);
+        
+        this.setState({
+            times: times.slice(),
+        });
+    }
+
+    /**
+     * remove the last time added
+     */
+    private async removeTime() {
+        const times = this.state.times;
+
+        if(times.length > 1) {
+            times.pop();
+            this.setState({
+                times: times.slice(),
+            });
+        }
     }
 }

@@ -1,38 +1,27 @@
 import * as React from "react";
 import {RequestOptions} from "spiel-request";
 import {Container, Row, Pagination, Button, Form} from "react-bootstrap";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import TimePicker from "rc-time-picker"
 import {IPageState} from "./interfaces";
 import {request} from "../config";
 import {Email, Cron, Calendar} from "../components";
+import {setValues} from "../modules";
 
 /**
  * Component page for bussines logic of the application
  */
 export class Page extends React.Component<any, IPageState> {
     private now = moment().hour(0).minute(0);
+    private time: Moment = this.now;
     public state: IPageState = {
         emails: [],
         total: 0,
         active: 1,
         showConfig: false,
         selected: "intervalForm0",
-        times: [<TimePicker
-            key={0}
-            id={`time-${0}`}
-            showSecond={false}
-            defaultOpenValue={moment()}
-            defaultValue={this.now}
-            inputReadOnly
-        />],
-        periodicaly: <TimePicker
-            showSecond={false}
-            defaultOpenValue={moment()}
-            defaultValue={this.now}
-            inputReadOnly
-        />,
-        interval: [[], [], [], []],
+        times: [this.createTimePicker(0)],
+        interval: [["*"], ["*"], [], []],
     }
 
     componentDidMount() {
@@ -41,7 +30,7 @@ export class Page extends React.Component<any, IPageState> {
 
     public render() {
         const entries = [];
-        const radioNames = ["periodicaly", "Every day", "Every working day", "Every weekend", "Days per week", "Custom"];
+        const radioNames = ["Interval", "Every day", "Every working day", "Every weekend", "Days per week", "Custom"];
         const daysName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
         if(this.state.total) {
@@ -90,7 +79,7 @@ export class Page extends React.Component<any, IPageState> {
                                                                 this.setState({
                                                                     selected: `intervalForm${index}`
                                                                 });
-                                                                this.resetDigest();
+                                                                this.resetDigest(`intervalForm${index}`);
                                                             }}
                                                             checked={this.state.selected === `intervalForm${index}`}
                                                         />
@@ -122,14 +111,18 @@ export class Page extends React.Component<any, IPageState> {
                                                     </div>   
                                                 : null}
                                                 <h3>Choose time</h3>
-                                                {this.state.selected === "intervalForm0" ? this.state.periodicaly : 
-                                                    <div>
-                                                        {this.state.times.map((time) => time)}
+                                                <div>
+                                                    {this.state.times.map((time) => time)}
+                                                    {this.state.selected !== "intervalForm0" ?
                                                         <div className="col-12 add">
-                                                            <Button variant="success" onClick={() => this.addTime()}>add</Button>
-                                                            <Button variant="danger" onClick={() => this.removeTime()} disabled={this.state.times.length <= 1}>remove</Button>
-                                                        </div>
-                                                    </div>}
+                                                            <Button 
+                                                                variant="success"
+                                                                onClick={() => this.addTime()}>add</Button>
+                                                            <Button variant="danger"
+                                                                onClick={() => this.removeTime()}
+                                                                disabled={this.state.times.length <= 1}>remove</Button>
+                                                        </div>: null}
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="col-6 list"></div>
@@ -176,18 +169,17 @@ export class Page extends React.Component<any, IPageState> {
      * add time element
      */
     private addTime() {
+        const interval = this.state.interval;
+        interval[2].push("0");
+        interval[3].push("0");
+
+        this.time = this.now;
         const times = this.state.times;
-        times.push(<TimePicker
-            key={times.length}
-            id={`time-${times.length}`}
-            showSecond={false}
-            defaultOpenValue={moment()}
-            defaultValue={this.now}
-            inputReadOnly
-        />);
+        times.push(this.createTimePicker(times.length));
         
         this.setState({
             times: times.slice(),
+            interval: interval.slice(),
         });
     }
 
@@ -195,12 +187,16 @@ export class Page extends React.Component<any, IPageState> {
      * remove the last time added
      */
     private removeTime() {
+        const interval = this.state.interval;
         const times = this.state.times;
 
         if(times.length > 1) {
             times.pop();
+            interval[2].pop;
+            interval[3].pop;
             this.setState({
                 times: times.slice(),
+                interval: interval.slice(),
             });
         }
     }
@@ -208,17 +204,12 @@ export class Page extends React.Component<any, IPageState> {
     /**
      * reset all the digest config values
      */
-    private resetDigest() {
+    private resetDigest(selected: string) {
+        this.time = this.now;
+        const interval = setValues(selected, [[], [], [], []]);
         this.setState({
-            times: [<TimePicker
-                key={0}
-                id={`time-${0}`}
-                showSecond={false}
-                defaultOpenValue={moment()}
-                defaultValue={this.now}
-                inputReadOnly
-            />].slice(),
-            interval: [[], [], [], []].slice(), 
+            times: [this.createTimePicker(0)].slice(),
+            interval: interval.slice(),
         })
     }
 
@@ -248,17 +239,45 @@ export class Page extends React.Component<any, IPageState> {
     /**
      * change the time
      */
-    private changeTime(value: string, index: number) {
+    private changeTime(value: string, index: number, typeTime: string) {
         const interval = this.state.interval;
-        const hours = parseInt(value.split(":")[0]);
+        const times = this.state.times;
+        const hours = parseInt(value.split(":")[0])
         const minutes = parseInt(value.split(":")[1]);
 
         interval[2][index] = hours.toString();
         interval[3][index] = minutes.toString();
 
+        if(typeTime === "interval") {
+            interval[2][0] = hours === 0 ? "*" : interval[2][0];
+        }
+
+        times[index] = this.createTimePicker(index);
+
         this.setState({
             interval: interval.slice(),
+            times: times.slice() 
         });
-    } 
 
+        console.log(this.state.interval);
+    }
+    
+    private createTimePicker(index: number) {
+        return <TimePicker
+            key={index}
+            value={this.time}
+            id={`time-${index}`}
+            onChange={(time: Moment) => {
+                this.time = time || this.now;
+                if(this.time) {
+                    this.changeTime(this.time.format("HH:mm"), index, 
+                    this.state.selected === "intervalForm0" ? "interval": "puntual");
+                }
+            }}
+            showSecond={false}
+            defaultOpenValue={moment()}
+            defaultValue={this.now}
+            inputReadOnly
+        />
+    }
 }

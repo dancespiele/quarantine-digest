@@ -8,7 +8,6 @@ export interface IPageState {
     showConfig: boolean;
     selected: string;
     times: ReactElement[];
-    periodicaly: ReactElement;
     interval: Array<string[]>;
 }
 

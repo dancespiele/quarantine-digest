@@ -40,5 +40,5 @@ Without .env file the app get the values shown above.
 * Complete the page implementation
 * React component test
 * Integration test for socket
-* validation in case to introduce the same time again
+* Validation in case of introduce the same time again
 * Some refactor

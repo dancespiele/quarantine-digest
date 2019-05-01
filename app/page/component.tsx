@@ -1,6 +1,7 @@
 import * as React from "react";
 import {RequestOptions} from "spiel-request";
-import {Container, Row, Pagination, Button, Form, Alert, Navbar, Nav} from "react-bootstrap";
+import {Container, Row, Button, Form, Alert, Navbar, Nav} from "react-bootstrap";
+import Pagination from "react-js-pagination";
 import moment, { Moment } from "moment";
 import TimePicker from "rc-time-picker"
 import {IPageState, IDigest} from "./interfaces";
@@ -68,28 +69,8 @@ export class Page extends React.Component<any, IPageState> {
     }
 
     public render() {
-        const entries = [];
         const radioNames = ["Interval", "Every day", "Every working day", "Every weekend", "Days per week", "Custom"];
         const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        let pages = 0;
-
-        if(this.state.total) {
-            pages = Math.ceil(this.state.total / 10);
-            for(let i = 1; i <= pages; i++) {
-                if(i <= 20) {
-                    entries.push(
-                        <Pagination.Item key={i} active={i === this.state.active}
-                            onClick={async () => {
-                                this.setState({
-                                    active: i,
-                                });
-                                await this.getEmails(i);
-                            }}>{i}
-                        </Pagination.Item>,
-                    )
-                }
-            }
-        };
 
         return (
             <div>
@@ -119,18 +100,15 @@ export class Page extends React.Component<any, IPageState> {
                     {this.state.section === "home" ? 
                     <Container>
                         <Row className="justify-content-end pagination-container">
-                            {entries.length < 20 ? 
-                                <Pagination>{entries}</Pagination>: 
-                                <Pagination>{entries}
-                                    <Pagination.Ellipsis />
-                                    <Pagination.Item active={pages === this.state.active}
-                                        onClick={async () => {
-                                            this.setState({
-                                                active: pages,
-                                            });
-                                            await this.getEmails(pages);
-                                        }}>{pages}</Pagination.Item>
-                                </Pagination>}
+                            <Pagination
+                                activePage={this.state.active}
+                                itemClass="page-item"
+                                linkClass="page-link"
+                                itemsCountPerPage={10}
+                                totalItemsCount={this.state.total}
+                                pageRangeDisplayed={5}
+                                onChange={this.getEmails.bind(this)}
+                            />
                         </Row>
                         {this.state.emails ? <Row>
                             <Email 
@@ -245,6 +223,7 @@ export class Page extends React.Component<any, IPageState> {
             this.setState({
                 emails: response.allEmails.slice(),
                 total: response.total,
+                active: page
             });
         } catch (error) {
             this.setState({

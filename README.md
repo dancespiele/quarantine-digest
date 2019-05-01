@@ -1,6 +1,6 @@
 # quarantine-digest
 
-Test project about email digest. This has 2 sections `emails` and `config`. The `Emails` shows all the emails with pagination. The `config` give the possibility to set when the app check for new emails nevertheless it is only a UI simulation, it means that the application will check anyway new emails every 1 minute. Please consider that once the server is off the next that the server is running will generate different emails because it is saved in memory instead of database
+Test project about email digest. This has 2 sections `emails` and `config`. The `Emails` shows all the emails with pagination. The `config` give the possibility to set when the app check for new emails nevertheless it is only a UI simulation, it means that the application will check anyway new emails every minute. Please consider that once the server is off the next that the server is running will generate different emails because it is saved in memory instead of database
 
 ## Install
 

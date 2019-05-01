@@ -28,6 +28,7 @@ export class Page extends React.Component<any, IPageState> {
     };
 
     public async componentDidMount() {
+        if (!location.hash) location.hash = "#home";
         this.setState({
             section: location.hash.replace("#", ""),
         });
@@ -139,6 +140,7 @@ export class Page extends React.Component<any, IPageState> {
                     </Container> : this.state.section === "config" ? 
                     <Container>
                         <Row>
+                            <h1 className="config-title">Digest Config</h1>
                             <Digest 
                                 getEmails={() => this.getEmails(1)}>
                                 <Row className="col-12 config mr-auto">

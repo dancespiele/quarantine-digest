@@ -17,7 +17,7 @@ const http = new Server(app);
 const io = socket(http);
 
 const corsOptions: CorsOptions = {
-    origin: process.env.BACKEND_URL || "http://localhost:3000",
+    origin: process.env.CORS || "http://localhost:3000",
     methods: ["OPTIONS", "GET", "POST", "DELETE"],
 }
 
@@ -42,11 +42,11 @@ io.on("connection", (socket) => {
     });
 })
 
-app.listen(process.env.BACKEND_URL_PORT || 8000, () => {
-    console.log(`Server running in port ${process.env.BACKEND_URL_PORT || 8000}`);
+app.listen(process.env.BACKEND_PORT || 8000, () => {
+    console.log(`Server running in port ${process.env.BACKEND_PORT || 8000}`);
 });
 
-http.listen(process.env.SOCKET_URL_PORT || 4000, () => {
-    console.log("started on port 4000");
+http.listen(process.env.SOCKET_PORT || 4000, () => {
+    console.log(`started on port ${process.env.SOCKET_PORT || 4000}`);
 });
 

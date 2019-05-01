@@ -1,3 +1,3 @@
-export interface ICronProps {
+export interface IDigestProps {
     getEmails: (page: string) => Promise<void>
 }

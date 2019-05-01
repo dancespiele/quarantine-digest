@@ -33,31 +33,12 @@ lab.experiment("Quarantine api", () => {
         expect(response.body.allEmails[0]).include(["date", "from", "to", "subject", "content"]);
     });
 
-    lab.test("should get all the emails", async () => {
-        const response = await request(app)
-            .get("/digest");
 
-        expect(response.body).include(["allEmails", "total"]);
-        expect(response.body.allEmails[0]).include(["date", "from", "to", "subject", "content"]);
-    });
-    
-    lab.test("should increas the emails", async() => {
-        for(let i = 0; i <= 5; i++) {
-            const response = await request(app)
-                .get("/digest");
-            expect(response.body.total).above(total);
-        }
-    });
-
-    lab.test("should get the second page", async() => {
+    lab.test("should post the code and return back", async () => {
         const response = await request(app)
-            .get("/digest")
-            .query({
-                page: 2,
-                entries: 10,
-            });
-        
-        expect(response.body.allEmails.length).to.be.equal(10);
-        expect(response.body.allEmails[9]).include(["date", "from", "to", "subject", "content"]);
+            .post("/reader")
+            .send({code: "* 1,2,3,4,5 10,18 0"});
+
+        expect(response.body.codes[0]).to.be.equal("* 1,2,3,4,5 10,18 0")
     });
 });

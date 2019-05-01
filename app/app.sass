@@ -5,12 +5,29 @@ $day-width: 100% / 7
 $selected: #778695
 
 .pagination-container
-    margin-top: 10px
+    margin-top: 50px
+
+.digest
+    margin-top: 60px
     
     .pagination
             margin-bottom: 0
 
-.table
+@media all and (max-width: 800px)
+    .email-table
+        width: 800px
+        overflow-y: auto
+
+        .head
+            width: 800px
+        
+        .row-table
+            width: 800px
+
+.email-table
+    width: 100%
+    margin-bottom: 50px
+
     .head
         font-size: 20px
         padding: 10px 0
@@ -44,6 +61,10 @@ $selected: #778695
 .config
     margin-top: 20px
 
+    .time-picker
+        margin-right: 5px
+        margin-bottom: 5px
+
     .add
         margin-top: 15px
         padding-left: 0
@@ -73,7 +94,18 @@ $selected: #778695
             background-color: $selected
 
     .submit
-        text-align: right
+        margin-bottom: 20px
 
         button
             width: 100px
+            margin-bottom: 5px
+
+    .list
+        display: inline-flex
+
+        button
+            height: 50px
+            margin-left: 5px
+
+    .info
+        margin-top: 50px

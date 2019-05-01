@@ -1,4 +1,6 @@
-export const encode = (interval: Array<String[]>): string => {
+import {Codes} from "../page";
+
+export const encode = (interval: Codes): string => {
     let encoded = "";
 
     interval.forEach((values, index) => {

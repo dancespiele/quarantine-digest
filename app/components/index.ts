@@ -1,3 +1,3 @@
 export {IFeed, Email} from "./email";
-export {Cron} from "./cron";
+export {Digest} from "./digest";
 export {Calendar} from "./calendar";

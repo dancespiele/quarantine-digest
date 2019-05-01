@@ -2,9 +2,9 @@ import * as React from "react";
 import {IPropsCalendar} from "./interfaces";
 
 export const Calendar = (props: IPropsCalendar) => {
-    let nameDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let nameDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     let month = [];
-    let day = 1;
+    let day = 0;
 
     const head = <div>{nameDays.map((dayName) => 
         <div className="day-name" key={dayName}>{dayName}</div>)}
@@ -17,7 +17,7 @@ export const Calendar = (props: IPropsCalendar) => {
                 onClick={(event: any) => {
                     const dayPicked: string = event.target.id.replace("day-", "")
                     props.onChangeCalendar(dayPicked);
-                }} id={`day-${day}`} key={`${w}-${d}`}>{day}</div>);
+                }} id={`day-${day}`} key={`${w}-${d}`}>{day + 1}</div>);
             day++;
         }
         month.push(<div className="week" key={w}>{week}</div>)

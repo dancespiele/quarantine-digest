@@ -36,6 +36,8 @@
     "@types/react": "^16.8.14",
     "@types/react-bootstrap": "^0.32.17",
     "@types/react-dom": "^16.8.4",
+    "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
     "cors": "^2.8.5",
@@ -50,6 +52,8 @@
     "react-dom": "^16.8.6",
     "remove": "^0.1.5",
     "sass": "^1.19.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "spiel-request": "^0.2.2",
     "ts-node": "^8.1.0"
   },

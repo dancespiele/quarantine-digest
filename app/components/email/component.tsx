@@ -20,7 +20,7 @@ export class Email extends React.Component<IEmailProps, IEmailState> {
 
     public render() {
         return (
-            <div className="table">
+            <div className="email-table">
                 <Row className="head">
                     <div className="col-3">Date</div>
                     <div className="col-3">From</div>

@@ -1,9 +1,9 @@
 import {Express} from "express";
-import {digest} from "./digest/routes";
 import {init} from "./init/routes";
+import {reader} from "./reader/routes";
 
 
 export const endpoints = (app: Express) => {
-    digest(app);
     init(app);
+    reader(app);
 };

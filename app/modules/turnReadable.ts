@@ -34,8 +34,8 @@ export const turnReadable = (intervals: Codes[]): string[] => {
             ` at ${interval[2].map((el, index ) => `${index > 0 ? " " : ""}${el} h ${interval[3][index]} min`)}`;
         } else if (interval[0][0] !== "*") {
             digest = `Digest ${interval[0].length > 1 ? "days": "day"} ${interval[0].sort((a, b) => parseInt(a) - parseInt(b))
-                    .map((el, index) => `${index > 0 ? " " : ""}${parseInt(el) + 1}${el === "1" 
-                ? "st" : el === "2" ? "nd" : el === "3" ? "rd": "th"}`)}` + 
+                    .map((el, index) => `${index > 0 ? " " : ""}${parseInt(el) + 1}${el === "0" 
+                ? "st" : el === "1" ? "nd" : el === "2" ? "rd": "th"}`)}` + 
                 ` at ${interval[2].map((el, index ) => `${index > 0 ? " " : ""}${el} h ${interval[3][index]} min`)}`;
         }
 

@@ -391,6 +391,9 @@ export class Page extends React.Component<any, IPageState> {
      */
     private resetDigest(selected: string) {
         this.time = undefined;
+
+        if (selected === "intervalForm5") this.removeSelectedDays();
+
         const interval = setValues(selected, [[], [], [], []]);
         this.setState({
             times: [this.createTimePicker(0)].slice(),
@@ -477,6 +480,14 @@ export class Page extends React.Component<any, IPageState> {
 
         this.setState({
             interval: interval.slice(),
+        });
+    }
+
+    private removeSelectedDays () {
+        const selectedDays = document.getElementsByClassName("day-selected");
+
+        Array.from(selectedDays).forEach((selected) => {
+            selected.className = selected.className.replace("day-selected", "");
         });
     }
 }
